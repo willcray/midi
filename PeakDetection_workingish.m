@@ -165,21 +165,26 @@ while beat_indexer < y_size    % Look over range of 1/16 note around where note 
         k = k+1;
         %bpm_adjusted = ((locs2(1)) - last_max_index)/2;
         beat_indexer = locs2(1);
+        if(upperbound == y_size)
+            note_durations(k, 2) = y_size;
+        end    
     elseif median < silence * 1.5
         % rest
         disp('theres a rest');
         fprintf('    beat_indexer = %i', beat_indexer);
         if note_playing == 1
-            disp('note playing');
-            note_durations(k, 2) = beat_indexer;
+            disp('note WAS playing');
+            note_durations(k-1, 2) = beat_indexer;
             note_playing = 0;
-            k = k+1;
         end
         bpm_adjusted = bpm_distance/2;
     else
         disp('note continued');
         % continued note
         bpm_adjusted = bpm_distance/2;
+        if(upperbound == y_size)
+            note_durations(k-1, 2) = y_size;
+        end
     end
     
     %bpm_adjusted = (bpm_adjusted + 10*(bpm_distance/2)) / 11;
